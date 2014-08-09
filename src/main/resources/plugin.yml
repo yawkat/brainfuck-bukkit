@@ -1,0 +1,4 @@
+name: Brainfuck
+author: yawkat
+version: 1.0-SNAPSHOT
+main: at.yawk.brainfuckloader.BrainfuckBukkit
