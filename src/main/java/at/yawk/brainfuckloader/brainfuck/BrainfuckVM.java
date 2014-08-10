@@ -6,7 +6,7 @@ import java.util.List;
  * @author yawkat
  */
 public class BrainfuckVM {
-    private static final int MEM_SIZE = 100_000;
+    private static final int INIT_SIZE = 128;
 
     private byte[] memory;
     private int pointer;
@@ -16,8 +16,15 @@ public class BrainfuckVM {
     }
 
     public synchronized void reset() {
-        memory = new byte[MEM_SIZE];
-        pointer = MEM_SIZE / 2;
+        memory = new byte[INIT_SIZE];
+        pointer = INIT_SIZE / 2;
+    }
+
+    private void grow() {
+        byte[] oldMem = memory;
+        memory = new byte[oldMem.length * 2];
+        System.arraycopy(oldMem, 0, memory, oldMem.length / 2, oldMem.length);
+        pointer += oldMem.length / 2;
     }
 
     @SuppressWarnings("ChainOfInstanceofChecks")
@@ -39,13 +46,13 @@ public class BrainfuckVM {
                     case MOVE_LEFT:
                         pointer--;
                         if (pointer < 0) {
-                            throw new BrainfuckException("Memory limit exceeded!");
+                            grow();
                         }
                         break;
                     case MOVE_RIGHT:
                         pointer++;
                         if (pointer >= memory.length) {
-                            throw new BrainfuckException("Memory limit exceeded!");
+                            grow();
                         }
                         break;
                     case OUTPUT:
