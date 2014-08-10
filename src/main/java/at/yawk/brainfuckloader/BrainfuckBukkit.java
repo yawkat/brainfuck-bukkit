@@ -45,9 +45,7 @@ public class BrainfuckBukkit extends JavaPlugin implements Listener {
         pmgr.registerEvent((Class) eventClass,
                            this,
                            EventPriority.NORMAL,
-                           (l, e) -> getServer().getScheduler().runTask(this,
-                                                                        () -> handler.getFunction().apply(
-                                                                                new Object[]{ e })),
+                           (l, e) -> handler.getFunction().apply(new Object[]{ e }),
                            this,
                            true);
     }
